@@ -10,13 +10,8 @@ namespace rejseplanencore
     {
         private Dictionary<string,string> _queryParams = new Dictionary<string,string>();
         public IDictionary<string,string> QueryParams => _queryParams;
-        public Uri Url { get; }
+        public string Url { get; }
         public RestRequest(string url)
-        {
-            Url = new Uri(url);
-        }
-
-        public RestRequest(Uri url)
         {
             Url = url;
         }
@@ -52,11 +47,13 @@ namespace rejseplanencore
         internal static async Task<RestResponse<T>> Execute<T>(this System.Net.Http.HttpClient client, RestRequest request) where T:class
         {
             var x = new XmlSerializer(typeof(T));
-            string url = request.Url.ToString();
+            string url = request.Url;
             if(request.QueryParams != null)
                 url = QueryHelpers.AddQueryString(url, request.QueryParams);
-            
-            var s = await client.GetStreamAsync(new Uri(url, request.Url.IsAbsoluteUri ? UriKind.Absolute : UriKind.Relative));
+                        
+            var s = await client.GetStreamAsync(url);
+            var str = await client.GetStringAsync(url);
+            Console.WriteLine(str);
             return new RestResponse<T>((T)x.Deserialize(s));
         }
     }

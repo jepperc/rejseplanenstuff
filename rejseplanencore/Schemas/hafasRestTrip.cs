@@ -73,7 +73,7 @@ namespace rejseplanencore.Schemas {
         public Trip() {
             this.alternativeField = false;
             this.validField = true;
-            this.cancelledField = true;
+            this.cancelledField = false;
         }
         
         /// <remarks/>

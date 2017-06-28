@@ -44,7 +44,7 @@ namespace rejseplanencore
         {
             var url = detRef.@ref;
 
-            var request = new RestRequest(new Uri(url, UriKind.Absolute));
+            var request = new RestRequest(url);
 
             var response = await Client.Execute<JourneyDetail>(request);
             return response.Data;
